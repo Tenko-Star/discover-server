@@ -4,6 +4,7 @@ import (
 	"github.com/google/uuid"
 	"go-discover-server/message"
 	"net"
+	"strings"
 	"testing"
 	"time"
 )
@@ -60,7 +61,6 @@ func createDevice(t *testing.T) *message.Message {
 		deviceType  = "test-type"
 		err         error
 		id          uuid.UUID
-		binId       []byte
 	)
 
 	id, err = uuid.NewUUID()
@@ -68,17 +68,17 @@ func createDevice(t *testing.T) *message.Message {
 		t.Errorf("create uuid fail: %s", err)
 		return nil
 	}
-	binId, err = id.MarshalBinary()
-	if err != nil {
-		t.Errorf("create uuid fail: %s", err)
-		return nil
-	}
+	idStr := strings.Replace(id.String(), "-", "", -1)
 
-	return message.New(version, supportType, deviceName, deviceType, binId)
+	return message.New(version, supportType, deviceName, deviceType, idStr)
 }
 
 func TestHex2Str(t *testing.T) {
 	var arr = []byte{0x64, 0x39, 0x33, 0x31, 0x65, 0x30, 0x63, 0x31, 0x35, 0x65, 0x61, 0x33, 0x34, 0x31, 0x39, 0x65}
 
-	t.Logf("result: %s", string(arr))
+	t.Logf("result byte array: %s", string(arr))
+
+	var str = "1e5dca2eb37f11ee80e418c04d4e3a9a"
+
+	t.Logf("result str: %s", string([]byte(str)))
 }

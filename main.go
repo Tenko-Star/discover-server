@@ -15,7 +15,7 @@ func main() {
 
 	log.W("Server start.")
 
-	log.I("Start udp server.")
+	log.I("Start UDP server.")
 	server.RunUDPServer(udpServerIp, udpServerPort)
 
 	log.I("Start Http server.")

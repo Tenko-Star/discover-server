@@ -16,14 +16,14 @@ type Message struct {
 	DeviceType    string
 }
 
-func New(version int, supportType int, deviceName, deviceType string, deviceId []byte) *Message {
+func New(version int, supportType int, deviceName, deviceType, deviceId string) *Message {
 	return &Message{
 		magic:         Magic,
 		Version:       uint8(version),
 		SupportType:   uint16(supportType),
 		deviceNameLen: uint32(len(deviceName)),
 		deviceTypeLen: uint32(len(deviceType)),
-		DeviceId:      deviceId,
+		DeviceId:      []byte(deviceId),
 		DeviceName:    deviceName,
 		DeviceType:    deviceType,
 	}
@@ -49,19 +49,19 @@ func Unmarshal(b []byte) (*Message, error) {
 		return nil, errors.New("incorrect package")
 	}
 
-	remain = remain - 16
+	remain = remain - 32
 	if remain < 0 {
 		return nil, errors.New("device id is incorrect")
 	}
-	var deviceId = b[12:28]
+	var deviceId = b[12:44]
 
 	remain = remain - int(deviceNameLen)
 	if remain < 0 {
 		return nil, errors.New("device name length is incorrect")
 	}
 
-	var deviceNameEnd = 28 + deviceNameLen
-	var deviceName = string(b[28:deviceNameEnd])
+	var deviceNameEnd = 44 + deviceNameLen
+	var deviceName = string(b[44:deviceNameEnd])
 
 	remain = remain - int(deviceTypeLen)
 	if remain < 0 {
