@@ -32,7 +32,7 @@ func createResponse(id string, i *Info) *Response {
 		Port:        i.ip.Port,
 		Version:     i.Version,
 		SupportType: i.SupportType,
-		DeviceId:    uuidArrayToString([]byte(id)),
+		DeviceId:    id,
 		DeviceName:  i.DeviceName,
 		DeviceType:  i.DeviceType,
 	}

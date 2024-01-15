@@ -1,7 +1,6 @@
 package core
 
 import (
-	"encoding/hex"
 	"go-discover-server/log"
 	"go-discover-server/message"
 	"net"
@@ -20,7 +19,7 @@ func AddDevice(m *message.Message, addr *net.UDPAddr) (string, error) {
 	if info, ok := deviceMap[id]; ok {
 		select {
 		case info.timer <- 1:
-			log.D("device refreshed: %s", uuidArrayToString(m.DeviceId))
+			log.D("device refreshed: %s", string(m.DeviceId))
 			return id, nil
 
 		default:
@@ -37,7 +36,7 @@ func RemoveDevice(id string) {
 	defer locker.Unlock()
 
 	delete(deviceMap, id)
-	log.I("device removed: %s", uuidArrayToString([]byte(id)))
+	log.I("device removed: %s", id)
 }
 
 func FindDevice(id string) *Info {
@@ -109,11 +108,7 @@ func createInfo(m *message.Message, addr *net.UDPAddr) (string, error) {
 	}
 
 	deviceMap[id] = info
-	log.I("device added: %s", uuidArrayToString(m.DeviceId))
+	log.I("device added: %s", string(m.DeviceId))
 
 	return id, nil
-}
-
-func uuidArrayToString(uuidArr []byte) string {
-	return hex.EncodeToString(uuidArr)
 }

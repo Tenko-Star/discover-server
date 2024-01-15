@@ -76,3 +76,9 @@ func createDevice(t *testing.T) *message.Message {
 
 	return message.New(version, supportType, deviceName, deviceType, binId)
 }
+
+func TestHex2Str(t *testing.T) {
+	var arr = []byte{0x64, 0x39, 0x33, 0x31, 0x65, 0x30, 0x63, 0x31, 0x35, 0x65, 0x61, 0x33, 0x34, 0x31, 0x39, 0x65}
+
+	t.Logf("result: %s", string(arr))
+}

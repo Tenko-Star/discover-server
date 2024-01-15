@@ -11,7 +11,7 @@ func main() {
 	var udpServerPort = 9972
 	var httpServerAddr = "0.0.0.0:9973"
 
-	log.SetLevel(log.LevelWarn)
+	//log.SetLevel(log.LevelWarn)
 
 	log.W("Server start.")
 
