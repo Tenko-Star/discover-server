@@ -3,7 +3,7 @@ package server
 import (
 	"go-discover-server/core"
 	"go-discover-server/log"
-	"go-discover-server/message"
+	"go-discover-server/message/discover"
 	"net"
 )
 
@@ -34,8 +34,8 @@ func runUnicast(bind net.IP, port int) {
 			continue
 		}
 
-		var m *message.Message
-		m, err = message.Unmarshal(data[:readLen])
+		var m *discover.Message
+		m, err = discover.Unmarshal(data[:readLen])
 		if err != nil {
 			log.W("could not parse data: %s", err.Error())
 			continue
@@ -71,8 +71,8 @@ func runMulticast(port int) {
 			continue
 		}
 
-		var m *message.Message
-		m, err = message.Unmarshal(data[:readLen])
+		var m *discover.Message
+		m, err = discover.Unmarshal(data[:readLen])
 		if err != nil {
 			log.W("could not parse data: %s", err.Error())
 			continue

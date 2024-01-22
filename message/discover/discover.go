@@ -1,8 +1,9 @@
-package message
+package discover
 
 import (
 	"encoding/binary"
 	"errors"
+	"go-discover-server/message"
 )
 
 type Message struct {
@@ -18,7 +19,7 @@ type Message struct {
 
 func New(version int, supportType int, deviceName, deviceType, deviceId string) *Message {
 	return &Message{
-		magic:         Magic,
+		magic:         message.Magic,
 		Version:       uint8(version),
 		SupportType:   uint16(supportType),
 		deviceNameLen: uint32(len(deviceName)),
@@ -45,7 +46,7 @@ func Unmarshal(b []byte) (*Message, error) {
 		deviceTypeLen = binary.BigEndian.Uint32(b[8:12])
 	)
 
-	if magic != Magic {
+	if magic != message.Magic {
 		return nil, errors.New("incorrect package")
 	}
 
@@ -104,9 +105,9 @@ func (m *Message) Marshal() ([]byte, error) {
 }
 
 func (m *Message) isSupportText() bool {
-	return m.SupportType&SupportText > 0
+	return m.SupportType&message.SupportText > 0
 }
 
 func (m *Message) isSupportFile() bool {
-	return m.SupportType&SupportFile > 0
+	return m.SupportType&message.SupportFile > 0
 }

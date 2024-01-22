@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/google/uuid"
 	"go-discover-server/message"
+	"go-discover-server/message/discover"
 	"net"
 	"strings"
 	"sync"
@@ -118,7 +119,7 @@ func testGroup(t *testing.T) {
 	group.Done()
 }
 
-func createDevice(t *testing.T) *message.Message {
+func createDevice(t *testing.T) *discover.Message {
 	var (
 		version     = message.V1
 		supportType = message.SupportText | message.SupportFile
@@ -135,7 +136,7 @@ func createDevice(t *testing.T) *message.Message {
 	}
 	idStr := strings.Replace(id.String(), "-", "", -1)
 
-	return message.New(version, supportType, deviceName, deviceType, idStr)
+	return discover.New(version, supportType, deviceName, deviceType, idStr)
 }
 
 func TestHex2Str(t *testing.T) {

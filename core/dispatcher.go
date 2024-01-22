@@ -2,7 +2,7 @@ package core
 
 import (
 	"go-discover-server/log"
-	"go-discover-server/message"
+	"go-discover-server/message/discover"
 	"net"
 	"sync"
 	"time"
@@ -11,7 +11,7 @@ import (
 var deviceMap = make(map[string]*Info)
 var locker = sync.Mutex{}
 
-func AddDevice(m *message.Message, addr *net.UDPAddr) (string, error) {
+func AddDevice(m *discover.Message, addr *net.UDPAddr) (string, error) {
 	locker.Lock()
 	defer locker.Unlock()
 
@@ -95,7 +95,7 @@ func createTimer(id string) RefreshChan {
 	return refreshChan
 }
 
-func createInfo(m *message.Message, addr *net.UDPAddr) (string, error) {
+func createInfo(m *discover.Message, addr *net.UDPAddr) (string, error) {
 	var id = string(m.DeviceId)
 	var info = &Info{
 		Version:      m.Version,

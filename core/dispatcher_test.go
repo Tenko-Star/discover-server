@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/google/uuid"
 	"go-discover-server/message"
+	"go-discover-server/message/discover"
 	"net"
 	"testing"
 	"time"
@@ -50,14 +51,8 @@ func addDevice(t *testing.T) string {
 	var err error
 	var id string
 	var _uuid uuid.UUID
-	var bUuid []byte
 
 	_uuid, err = uuid.NewUUID()
-	if err != nil {
-		t.Errorf("create uuid fail: %s", err)
-		return ""
-	}
-	bUuid, err = _uuid.MarshalBinary()
 	if err != nil {
 		t.Errorf("create uuid fail: %s", err)
 		return ""
@@ -67,7 +62,7 @@ func addDevice(t *testing.T) string {
 		IP:   net.IP([]byte{0x7f, 0x0, 0x0, 0x1}),
 		Port: 18088,
 	}
-	var m = message.New(message.V1, message.SupportText, "test-device", "test-type", bUuid)
+	var m = discover.New(message.V1, message.SupportText, "test-device", "test-type", _uuid.String())
 	id, err = AddDevice(m, addr)
 	if err != nil {
 		t.Errorf("add device error: %s", err)
